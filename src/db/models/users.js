@@ -1,0 +1,47 @@
+import { model, Schema } from "mongoose";
+
+const usersSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    sex: {
+      type: String,
+      required: true,
+      enum: ["male", "female"],
+      default: "female",
+    },
+    dayWaterGoal: {
+      type: Number,
+      required: true,
+      default: 1500,
+    },
+    photo: {
+      type: String,
+      required: false,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+usersSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+
+  return user;
+};
+
+export const UserCollection = model("users", usersSchema);
