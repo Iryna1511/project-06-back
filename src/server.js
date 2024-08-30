@@ -8,6 +8,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import notFoundHandler from "./middlewares/notFoundHandler.js";
 
 import authRouter from "./routes/auth.js";
+import usersRouter from "./routes/users.js";
 
 const PORT = Number(env("PORT", 3000));
 
@@ -27,6 +28,7 @@ export default function setupServer() {
   );
 
   app.use(authRouter);
+  app.use(usersRouter);
 
   app.use("*", notFoundHandler);
 

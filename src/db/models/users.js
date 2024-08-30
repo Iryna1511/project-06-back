@@ -19,7 +19,7 @@ const usersSchema = new Schema(
       type: String,
       required: true,
       enum: ["male", "female"],
-      default: "femail",
+      default: "female",
     },
     dayWaterGoal: {
       type: Number,
