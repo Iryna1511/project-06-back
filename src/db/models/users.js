@@ -15,13 +15,13 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
-    sex: {
+    gender: {
       type: String,
       required: true,
       enum: ["male", "female"],
       default: "female",
     },
-    dayWaterGoal: {
+    waterRate: {
       type: Number,
       required: true,
       default: 1500,

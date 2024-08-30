@@ -36,8 +36,8 @@ async function updateUserController(req, res, next) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    sex: req.body.sex,
-    dayWaterGoal: req.body.dayWaterGoal,
+    gender: req.body.gender,
+    waterRate: req.body.waterRate,
     photo: photoUrl,
   };
 
