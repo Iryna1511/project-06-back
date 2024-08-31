@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { env } from "./utils/env.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import notFoundHandler from "./middlewares/notFoundHandler.js";
+import { swaggerDocs } from "./middlewares/swaggerDocs.js";
 
 import authRouter from "./routes/auth.js";
 import usersRouter from "./routes/users.js";
@@ -26,6 +27,8 @@ export default function setupServer() {
       },
     })
   );
+
+  app.use("/api-docs", swaggerDocs());
 
   app.use(authRouter);
   app.use(usersRouter);
