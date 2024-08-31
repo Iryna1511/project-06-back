@@ -24,15 +24,15 @@ export const updateUserSchema = Joi.object({
     "string.max": "Password must be at most {#limit} characters",
     "string.empty": "Password cannot be empty",
   }),
-  sex: Joi.string().valid("male", "female").messages({
-    "string.base": "sex must be a string",
-    "any.only": 'sex must be one of ["male", "female"]',
-    "string.empty": "sex cannot be empty",
+  gender: Joi.string().valid("male", "female").messages({
+    "string.base": "Gender must be a string",
+    "any.only": 'Gender must be one of ["male", "female"]',
+    "string.empty": "Gender cannot be empty",
   }),
-  dayWaterGoal: Joi.number().min(1).max(15000).messages({
-    "number.min": "dayWaterGoal must be at least {#limit} ml",
-    "number.max": "dayWaterGoal must be at most {#limit} ml",
-    "number.base": "dayWaterGoal must be a number",
-    "number.empty": "dayWaterGoal cannot be empty",
+  waterRate: Joi.number().min(1).max(15000).messages({
+    "number.min": "WaterRate must be at least {#limit} ml",
+    "number.max": "WaterRate must be at most {#limit} ml",
+    "number.base": "WaterRate must be a number",
+    "number.empty": "WaterRate cannot be empty",
   }),
 });
