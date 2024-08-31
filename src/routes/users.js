@@ -17,7 +17,6 @@ router.patch(
   "/users/:userId",
   isValidId,
   jsonParser,
-  // upload.single("photo"),
   validateBody(updateUserSchema),
   ctrlWrapper(updateUserController)
 );

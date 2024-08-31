@@ -1,6 +1,5 @@
 import { getUserById, updateUser } from "../services/users.js";
 import createHttpError from "http-errors";
-import { env } from "../utils/env.js";
 
 async function getUserByIdController(req, res, next) {
   const { userId } = req.params;
@@ -20,33 +19,17 @@ async function getUserByIdController(req, res, next) {
 
 async function updateUserController(req, res, next) {
   const { userId } = req.params;
-  const photo = req.file;
-
-  let photoUrl;
-
-  if (photo) {
-    if (env("ENABLE_CLOUDINARY") === "true") {
-      photoUrl = await saveFileToCloudinary(photo);
-    } else {
-      photoUrl = await saveFileToUploadDir(photo);
-    }
-  }
 
   const user = {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
+    newPassword: req.body.newPassword,
     gender: req.body.gender,
     waterRate: req.body.waterRate,
-    photo: photoUrl,
   };
 
   const updatedUser = await updateUser(userId, user);
-
-  if (!updatedUser) {
-    next(createHttpError(404, "User not found"));
-    return;
-  }
 
   res.status(200).send({
     status: 200,
