@@ -18,10 +18,7 @@ export async function updateUser(userId, user) {
     waterRate: user.waterRate,
   };
 
-  if (user.password) {
-    if (user.newPassword === undefined)
-      throw createHttpError(400, "newPassword is required");
-
+  if (user.password && user.newPassword) {
     const isEqualPassword = await bcrypt.compare(
       user.password,
       checkedUser.password
