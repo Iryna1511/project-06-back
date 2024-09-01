@@ -13,7 +13,6 @@ export async function updateUser(userId, user) {
 
   const updatedUser = {
     name: user.name,
-    email: user.email,
     gender: user.gender,
     waterRate: user.waterRate,
   };
@@ -28,6 +27,27 @@ export async function updateUser(userId, user) {
 
     const encryptedPassword = await bcrypt.hash(user.newPassword, 10);
 
+    if (user.email) {
+      const emailInUse = await UserCollection.findOne({ email: user.email });
+
+      if (emailInUse)
+        throw createHttpError("Attention! This email is already in use");
+
+      const updatedUserWithPassAndEmail = {
+        password: encryptedPassword,
+        email: user.email,
+        ...updatedUser,
+      };
+
+      return UserCollection.findOneAndUpdate(
+        { _id: userId },
+        updatedUserWithPassAndEmail,
+        {
+          new: true,
+        }
+      );
+    }
+
     const updatedUserWithPass = {
       password: encryptedPassword,
       ...updatedUser,
@@ -36,6 +56,26 @@ export async function updateUser(userId, user) {
     return UserCollection.findOneAndUpdate(
       { _id: userId },
       updatedUserWithPass,
+      {
+        new: true,
+      }
+    );
+  }
+
+  if (user.email) {
+    const emailInUse = await UserCollection.findOne({ email: user.email });
+
+    if (emailInUse)
+      throw createHttpError("Attention! This email is already in use");
+
+    const updatedUserWithEmail = {
+      email: user.email,
+      ...updatedUser,
+    };
+
+    return UserCollection.findOneAndUpdate(
+      { _id: userId },
+      updatedUserWithEmail,
       {
         new: true,
       }
