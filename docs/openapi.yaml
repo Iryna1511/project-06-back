@@ -1,11 +1,11 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Water app
+  title: Water Tracker app
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: This is a documentation of Water app
+  description: This is a documentation of Water Tracker app
 tags:
   - name: User
     description: Operations with user.
@@ -20,6 +20,8 @@ paths:
   /users/{userId}:
     get:
       $ref: ../swagger/paths/users/{userId}/get.yaml
+    patch:
+      $ref: ../swagger/paths/users/{userId}/patch.yaml
 components:
   securitySchemes:
     bearerAuth:
