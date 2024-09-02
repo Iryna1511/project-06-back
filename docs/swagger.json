@@ -2,12 +2,12 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.0",
-    "title": "Water app",
+    "title": "Water Tracker app",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is a documentation of Water app"
+    "description": "This is a documentation of Water Tracker app"
   },
   "servers": [
     {
@@ -58,7 +58,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Get information about user",
+            "description": "Get information about user by userId",
             "content": {
               "application/json": {
                 "schema": {
@@ -78,7 +78,113 @@
                       "example": "Successfully found user with id 66d2e3a18c42147b871bcdcc!"
                     },
                     "data": {
-                      "type": "object"
+                      "type": "object",
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update's info about user by userId",
+        "operationId": "patchUser",
+        "description": "Update/add one or more fields about user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66d2e3a18c42147b871bcdcc"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "User's name",
+                    "type": "string",
+                    "example": "Lora"
+                  },
+                  "email": {
+                    "description": "User's email",
+                    "type": "string",
+                    "example": "lora@gmail.com"
+                  },
+                  "gender": {
+                    "description": "User's gender",
+                    "type": "string",
+                    "enum": [
+                      "male",
+                      "female"
+                    ],
+                    "example": "male",
+                    "default": "female"
+                  },
+                  "waterRate": {
+                    "description": "User's daily water goal",
+                    "type": "number",
+                    "example": 2100,
+                    "default": 1500
+                  },
+                  "password": {
+                    "description": "User's outdated password",
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "newPassword": {
+                    "description": "User's new password",
+                    "type": "string",
+                    "example": "987654321"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update's information about user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User successfully patched!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }
@@ -97,6 +203,50 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "user": {
+        "type": "object",
+        "required": [
+          "_id",
+          "email",
+          "gender",
+          "waterRate"
+        ],
+        "properties": {
+          "_id": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66d2e3a18c42147b871bcdcc"
+          },
+          "name": {
+            "description": "User's name",
+            "type": "string",
+            "example": "Lora"
+          },
+          "email": {
+            "description": "User's email",
+            "type": "string",
+            "example": "lora@gmail.com"
+          },
+          "gender": {
+            "description": "User's gender",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "female"
+          },
+          "waterRate": {
+            "description": "User's daily water goal",
+            "type": "number",
+            "example": 2100,
+            "default": 1500
+          }
+        }
       }
     },
     "responses": {
