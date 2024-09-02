@@ -1,0 +1,10 @@
+tags:
+  - Auth
+summary: Logout
+operationId: logout
+description: Logout a user from the system
+security:
+  - cookieAuth: []
+responses:
+  "204":
+    description: Successfully logged out

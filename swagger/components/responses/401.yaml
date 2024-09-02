@@ -21,4 +21,8 @@ content:
           properties:
             message:
               type: string
-              example: "Access token expired"
+              enum:
+                - "Access token expired"
+                - "Unauthorized"
+                - "Session expired"
+                - "Incorrect email or password"
