@@ -1,13 +1,20 @@
 import Joi from "joi";
 
 const authSchema = Joi.object({
-  email: Joi.string().email().required().message({
-    "string.email": "Email must be a valid email",
-  }),
-  password: Joi.string().min(8).max(64).required().message({
-    "string.min": "Password must be at least 8 characters",
-    "string.max": "Password must be at most 64 characters",
-  }),
+  email: Joi.string()
+    .email()
+    .message({
+      "string.email": "Email must be a valid email",
+    })
+    .required(),
+  password: Joi.string()
+    .min(8)
+    .max(64)
+    .message({
+      "string.min": "Password must be at least 8 characters",
+      "string.max": "Password must be at most 64 characters",
+    })
+    .required(),
 });
 
 export default authSchema;

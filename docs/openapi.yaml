@@ -22,6 +22,12 @@ paths:
       $ref: ../swagger/paths/users/{userId}/get.yaml
     patch:
       $ref: ../swagger/paths/users/{userId}/patch.yaml
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/register/post.yaml
+  /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login/post.yaml
 components:
   securitySchemes:
     bearerAuth:
