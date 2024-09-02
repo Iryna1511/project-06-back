@@ -26,10 +26,6 @@ const usersSchema = new Schema(
       required: true,
       default: 1500,
     },
-    photo: {
-      type: String,
-      required: false,
-    },
   },
   {
     timestamps: true,

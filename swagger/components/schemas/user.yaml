@@ -1,0 +1,30 @@
+type: object
+required:
+  - _id
+  - email
+  - gender
+  - waterRate
+properties:
+  _id:
+    description: User's id
+    type: string
+    example: 66d2e3a18c42147b871bcdcc
+  name:
+    description: User's name
+    type: string
+    example: Lora
+  email:
+    description: User's email
+    type: string
+    example: lora@gmail.com
+  gender:
+    description: User's gender
+    type: string
+    enum: ["male", "female"]
+    example: "male"
+    default: "female"
+  waterRate:
+    description: User's daily water goal
+    type: number
+    example: 2100
+    default: 1500
