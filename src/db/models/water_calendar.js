@@ -7,15 +7,11 @@ const waterCalendarSchema = new Schema(
       ref: "users",
       required: true,
     },
-    day: {
+    date: {
       type: Date,
       required: true,
     },
-    time: {
-      type: String,
-      required: true,
-    },
-    waterAmount: {
+    waterVolume: {
       type: Number,
       required: true,
     },
