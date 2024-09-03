@@ -2,24 +2,14 @@ import { getUserById, updateUser } from "../services/users.js";
 import createHttpError from "http-errors";
 
 async function getUserByIdController(req, res, next) {
-  const { userId } = req.params;
-
-  const user = await getUserById(userId);
-
-  if (user === null) {
-    return next(createHttpError(404, "User not found"));
-  }
-
   res.status(200).send({
     status: 200,
-    message: `Successfully found user with id ${userId}!`,
-    data: user,
+    message: `Successfully found user with id ${req.user._id}!`,
+    data: req.user,
   });
 }
 
 async function updateUserController(req, res, next) {
-  const { userId } = req.params;
-
   const user = {
     name: req.body.name,
     email: req.body.email,
@@ -29,7 +19,7 @@ async function updateUserController(req, res, next) {
     waterRate: req.body.waterRate,
   };
 
-  const updatedUser = await updateUser(userId, user);
+  const updatedUser = await updateUser(req.user._id, user);
 
   res.status(200).send({
     status: 200,
