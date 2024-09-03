@@ -17,11 +17,11 @@ servers:
   - url: http://localhost:3000
   - url: https://water-tracker-06.onrender.com
 paths:
-  /users/{userId}:
+  /user:
     get:
-      $ref: ../swagger/paths/users/{userId}/get.yaml
+      $ref: ../swagger/paths/user/get.yaml
     patch:
-      $ref: ../swagger/paths/users/{userId}/patch.yaml
+      $ref: ../swagger/paths/user/patch.yaml
   /auth/register:
     post:
       $ref: ../swagger/paths/auth/register/post.yaml

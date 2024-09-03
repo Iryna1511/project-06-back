@@ -30,8 +30,7 @@ export async function updateUser(userId, user) {
     if (user.email) {
       const emailInUse = await UserCollection.findOne({ email: user.email });
 
-      if (emailInUse)
-        throw createHttpError("Attention! This email is already in use");
+      if (emailInUse) throw createHttpError(409, "Email in use");
 
       const updatedUserWithPassAndEmail = {
         password: encryptedPassword,
@@ -65,8 +64,7 @@ export async function updateUser(userId, user) {
   if (user.email) {
     const emailInUse = await UserCollection.findOne({ email: user.email });
 
-    if (emailInUse)
-      throw createHttpError("Attention! This email is already in use");
+    if (emailInUse) throw createHttpError(409, "Email in use");
 
     const updatedUserWithEmail = {
       email: user.email,

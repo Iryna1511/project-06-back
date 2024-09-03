@@ -1,20 +1,13 @@
 tags:
   - User
-summary: Get info about user by userId
+summary: Get info about user
 operationId: getUser
 description: Get whole available information about user
 security:
   - bearerAuth: []
-parameters:
-  - in: path
-    name: userId
-    required: true
-    schema:
-      type: string
-      example: "66d2e3a18c42147b871bcdcc"
 responses:
   "200":
-    description: Get information about user by userId
+    description: Get information about user
     content:
       application/json:
         schema:
@@ -32,6 +25,6 @@ responses:
               example: "Successfully found user with id 66d2e3a18c42147b871bcdcc!"
             data:
               type: object
-              $ref: ../../../components/schemas/user.yaml
-  "404":
-    $ref: "../../../components/responses/404.yaml"
+              $ref: ../../components/schemas/user.yaml
+  "401":
+    $ref: "../../components/responses/401.yaml"
