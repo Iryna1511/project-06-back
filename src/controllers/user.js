@@ -1,7 +1,6 @@
-import { getUserById, updateUser } from "../services/users.js";
-import createHttpError from "http-errors";
+import { updateUser } from "../services/user.js";
 
-async function getUserByIdController(req, res, next) {
+async function getUserController(req, res, next) {
   res.status(200).send({
     status: 200,
     message: `Successfully found user with id ${req.user._id}!`,
@@ -28,4 +27,4 @@ async function updateUserController(req, res, next) {
   });
 }
 
-export { getUserByIdController, updateUserController };
+export { getUserController, updateUserController };
