@@ -32,12 +32,12 @@
     }
   ],
   "paths": {
-    "/users/{userId}": {
+    "/user": {
       "get": {
         "tags": [
           "User"
         ],
-        "summary": "Get info about user by userId",
+        "summary": "Get info about user",
         "operationId": "getUser",
         "description": "Get whole available information about user",
         "security": [
@@ -45,20 +45,9 @@
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "66d2e3a18c42147b871bcdcc"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Get information about user by userId",
+            "description": "Get information about user",
             "content": {
               "application/json": {
                 "schema": {
@@ -86,8 +75,8 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/404"
+          "401": {
+            "$ref": "#/components/responses/401"
           }
         }
       },
@@ -95,23 +84,12 @@
         "tags": [
           "User"
         ],
-        "summary": "Update's info about user by userId",
+        "summary": "Update's info about user",
         "operationId": "patchUser",
         "description": "Update/add one or more fields about user",
         "security": [
           {
             "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "66d2e3a18c42147b871bcdcc"
-            }
           }
         ],
         "requestBody": {
@@ -199,6 +177,9 @@
           },
           "404": {
             "$ref": "#/components/responses/404"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
           }
         }
       }
@@ -490,7 +471,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Email must be a valid email"
+                      "example": "Name must be a string"
                     }
                   }
                 }
@@ -500,7 +481,7 @@
         }
       },
       "401": {
-        "description": "Unauthorized error",
+        "description": "Unauthorized",
         "content": {
           "application/json": {
             "schema": {
@@ -531,7 +512,9 @@
                         "Access token expired",
                         "Unauthorized",
                         "Session expired",
-                        "Incorrect email or password"
+                        "Session not found",
+                        "Incorrect email or password",
+                        "Auth header should be of type Bearer"
                       ]
                     }
                   }
@@ -569,7 +552,11 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "enum": [
+                        "User not found",
+                        "Route not found",
+                        "Water entry not found."
+                      ]
                     }
                   }
                 }
@@ -579,7 +566,7 @@
         }
       },
       "409": {
-        "description": "Email in use",
+        "description": "Conflict",
         "content": {
           "application/json": {
             "schema": {
@@ -596,7 +583,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Email in use"
+                  "example": "ConflictError"
                 },
                 "data": {
                   "type": "object",

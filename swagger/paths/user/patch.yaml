@@ -1,17 +1,10 @@
 tags:
   - User
-summary: Update's info about user by userId
+summary: Update's info about user
 operationId: patchUser
 description: Update/add one or more fields about user
 security:
   - bearerAuth: []
-parameters:
-  - in: path
-    name: userId
-    required: true
-    schema:
-      type: string
-      example: "66d2e3a18c42147b871bcdcc"
 requestBody:
   content:
     application/json:
@@ -65,10 +58,12 @@ responses:
               example: "User successfully patched!"
             data:
               type: object
-              $ref: ../../../components/schemas/user.yaml
+              $ref: ../../components/schemas/user.yaml
   "400":
-    $ref: "../../../components/responses/400.yaml"
+    $ref: "../../components/responses/400.yaml"
   "401":
-    $ref: "../../../components/responses/401.yaml"
+    $ref: "../../components/responses/401.yaml"
   "404":
-    $ref: "../../../components/responses/404.yaml"
+    $ref: "../../components/responses/404.yaml"
+  "409":
+    $ref: "../../components/responses/409.yaml"

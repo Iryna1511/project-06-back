@@ -21,4 +21,4 @@ content:
           properties:
             message:
               type: string
-              example: "Email must be a valid email"
+              example: "Name must be a string"

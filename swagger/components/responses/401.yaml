@@ -1,4 +1,4 @@
-description: Unauthorized error
+description: Unauthorized
 content:
   application/json:
     schema:
@@ -25,4 +25,6 @@ content:
                 - "Access token expired"
                 - "Unauthorized"
                 - "Session expired"
+                - "Session not found"
                 - "Incorrect email or password"
+                - "Auth header should be of type Bearer"
