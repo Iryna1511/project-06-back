@@ -1,11 +1,6 @@
-import { UserCollection } from "../db/models/users.js";
+import { UserCollection } from "../db/models/user.js";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
-
-export async function getUserById(userId) {
-  const user = await UserCollection.findById(userId);
-  return user;
-}
 
 export async function updateUser(userId, user) {
   const checkedUser = await UserCollection.findOne({ _id: userId });

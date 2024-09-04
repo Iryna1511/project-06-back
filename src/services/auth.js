@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { ONE_HOUR, THIRTY_DAYS } from "../constants/index.js";
 import { SessionsCollection } from "../db/models/sessions.js";
 
-import { UserCollection } from "../db/models/users.js";
+import { UserCollection } from "../db/models/user.js";
 import createHttpError from "http-errors";
 
 export const registerUser = async (payload) => {
