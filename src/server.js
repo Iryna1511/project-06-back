@@ -7,10 +7,7 @@ import { env } from "./utils/env.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import notFoundHandler from "./middlewares/notFoundHandler.js";
 import { swaggerDocs } from "./middlewares/swaggerDocs.js";
-
-// import authRouter from "./routes/auth.js";
-// import userRouter from "./routes/user.js";
-
+import { TEMP_UPLOAD_DIR } from "./constants/index.js";
 import totalRouter from "./routes/index.js";
 
 const PORT = Number(env("PORT", 3000));
@@ -30,10 +27,8 @@ export default function setupServer() {
   //   })
   // );
 
+  app.use("/uploads", express.static(TEMP_UPLOAD_DIR));
   app.use("/api-docs", swaggerDocs());
-
-  // app.use(authRouter);
-  // app.use(userRouter);
 
   app.use(totalRouter);
 

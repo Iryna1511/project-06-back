@@ -2,7 +2,7 @@ import { UserCollection } from "../db/models/user.js";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 
-export async function updateUser(userId, user) {
+async function updateUser(userId, user) {
   const checkedUser = await UserCollection.findOne({ _id: userId });
   if (checkedUser === null) throw createHttpError(404, "User not found");
 
@@ -79,3 +79,11 @@ export async function updateUser(userId, user) {
     new: true,
   });
 }
+
+async function addAvatar(userId, avatar) {
+  return UserCollection.findOneAndUpdate({ _id: userId }, avatar, {
+    new: true,
+  });
+}
+
+export { updateUser, addAvatar };
