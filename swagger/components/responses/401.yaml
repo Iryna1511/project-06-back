@@ -27,4 +27,5 @@ content:
                 - "Session expired"
                 - "Session not found"
                 - "Incorrect email or password"
+                - "Wrong password"
                 - "Auth header should be of type Bearer"

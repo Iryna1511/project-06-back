@@ -21,4 +21,8 @@ content:
           properties:
             message:
               type: string
-              example: "Name must be a string"
+              enum:
+                - "Name must be a string"
+                - "Avatar was not received"
+                - "Data was not received"
+                - "Date query parameter is required"
