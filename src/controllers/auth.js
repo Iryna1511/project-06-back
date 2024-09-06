@@ -4,6 +4,7 @@ import {
   logoutUser,
   refreshUserSession,
 } from "../services/auth.js";
+import { getUser } from "../services/user.js";
 
 import { THIRTY_DAYS } from "../constants/index.js";
 
@@ -21,12 +22,17 @@ export const loginUserController = async (req, res) => {
   const sessionData = await loginUser(req.body);
 
   setupSession(res, sessionData);
+  const userWithPassword = await getUser(sessionData.userId);
+
+  const user = userWithPassword.toObject();
+  delete user.password;
 
   res.status(200).json({
     status: "200",
     message: "Successfully logged in an user!",
     data: {
       accessToken: sessionData.accessToken,
+      user,
     },
   });
 };
