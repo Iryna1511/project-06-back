@@ -14,7 +14,6 @@ tags:
   - name: Water
     description: Operations with water.
 servers:
-  - url: http://localhost:3000
   - url: https://water-tracker-06.onrender.com
 paths:
   /user:
@@ -22,6 +21,9 @@ paths:
       $ref: ../swagger/paths/user/get.yaml
     patch:
       $ref: ../swagger/paths/user/patch.yaml
+  /user/avatar:
+    patch:
+      $ref: ../swagger/paths/user/userAvatar/patch.yaml
   /auth/register:
     post:
       $ref: ../swagger/paths/auth/register/post.yaml

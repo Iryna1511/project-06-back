@@ -8,15 +8,7 @@ requestBody:
     application/json:
       schema:
         type: object
-        properties:
-          email:
-            description: User's email
-            type: string
-            example: lora@gmail.com
-          password:
-            description: User's password
-            type: string
-            example: "mySuperPassword(*_*)"
+        $ref: ../../../components/schemas/auth.yaml
 responses:
   "200":
     description: Successfully logged in an user!

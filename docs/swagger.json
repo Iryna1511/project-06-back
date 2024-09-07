@@ -11,9 +11,6 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
-    },
-    {
       "url": "https://water-tracker-06.onrender.com"
     }
   ],
@@ -84,7 +81,7 @@
         "tags": [
           "User"
         ],
-        "summary": "Update's info about user",
+        "summary": "Add/update user's info",
         "operationId": "patchUser",
         "description": "Update/add one or more fields about user",
         "security": [
@@ -97,44 +94,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "description": "User's name",
-                    "type": "string",
-                    "example": "Lora"
-                  },
-                  "email": {
-                    "description": "User's email",
-                    "type": "string",
-                    "example": "lora@gmail.com"
-                  },
-                  "gender": {
-                    "description": "User's gender",
-                    "type": "string",
-                    "enum": [
-                      "male",
-                      "female"
-                    ],
-                    "example": "male",
-                    "default": "female"
-                  },
-                  "waterRate": {
-                    "description": "User's daily water goal",
-                    "type": "number",
-                    "example": 2100,
-                    "default": 1500
-                  },
-                  "password": {
-                    "description": "User's outdated password",
-                    "type": "string",
-                    "example": "123456789"
-                  },
-                  "newPassword": {
-                    "description": "User's new password",
-                    "type": "string",
-                    "example": "987654321"
-                  }
-                }
+                "$ref": "#/components/schemas/patchUser"
               }
             }
           }
@@ -184,6 +144,75 @@
         }
       }
     },
+    "/user/avatar": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add/update user's avatar",
+        "operationId": "patchUserAvatar",
+        "description": "Add/update user's avatar by returning a link to avatar on Cloudinary",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "description": "User's desired avatar",
+                    "type": "string",
+                    "format": "binary",
+                    "default": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Return user's data with added/updated avatar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Avatar added successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "tags": [
@@ -197,18 +226,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "description": "User's email",
-                    "type": "string",
-                    "example": "lora@gmail.com"
-                  },
-                  "password": {
-                    "description": "User's password, must be at least 8 characters and maximum 64 characters",
-                    "type": "string",
-                    "example": "mySuperPassword(*_*)"
-                  }
-                }
+                "$ref": "#/components/schemas/auth"
               }
             }
           }
@@ -265,18 +283,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "description": "User's email",
-                    "type": "string",
-                    "example": "lora@gmail.com"
-                  },
-                  "password": {
-                    "description": "User's password",
-                    "type": "string",
-                    "example": "mySuperPassword(*_*)"
-                  }
-                }
+                "$ref": "#/components/schemas/auth"
               }
             }
           }
@@ -414,12 +421,49 @@
             "example": "66d2e3a18c42147b871bcdcc"
           },
           "name": {
-            "description": "User's name",
+            "description": "User's name, can contain max 32 characters",
             "type": "string",
             "example": "Lora"
           },
           "email": {
-            "description": "User's email",
+            "description": "User's email, must be a valid email",
+            "type": "string",
+            "example": "lora@gmail.com"
+          },
+          "gender": {
+            "description": "User's gender, must be one of [\"male\", \"female\"]",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "female"
+          },
+          "waterRate": {
+            "description": "User's daily water goal in ml, can be from 1 to 15000",
+            "type": "number",
+            "example": 2100,
+            "default": 1500
+          },
+          "avatar": {
+            "description": "URL to user's avatar",
+            "type": "string",
+            "default": null,
+            "example": "https://res.cloudinary.com/doicwbvic/image/upload/v1725634437/gvsagq1bnykokhtrtqr4.jpg"
+          }
+        }
+      },
+      "patchUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "User's name, can contain max 32 characters",
+            "type": "string",
+            "example": "Lora"
+          },
+          "email": {
+            "description": "User's email, must be a valid email",
             "type": "string",
             "example": "lora@gmail.com"
           },
@@ -434,10 +478,39 @@
             "default": "female"
           },
           "waterRate": {
-            "description": "User's daily water goal",
+            "description": "User's daily water goal in ml, can be from 1 to 15000",
             "type": "number",
             "example": 2100,
             "default": 1500
+          },
+          "password": {
+            "description": "User's outdated password, can be min 8 max 64 characters",
+            "type": "string",
+            "example": "123456789"
+          },
+          "newPassword": {
+            "description": "User's new password, can be min 8 max 64 characters",
+            "type": "string",
+            "example": "987654321"
+          }
+        }
+      },
+      "auth": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "description": "User's email, must be a valid email",
+            "type": "string",
+            "example": "lora@gmail.com"
+          },
+          "password": {
+            "description": "User's outdated password, can be min 8 max 64 characters",
+            "type": "string",
+            "example": "mySuperPassword(*_*)"
           }
         }
       }
@@ -471,7 +544,12 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Name must be a string"
+                      "enum": [
+                        "Name must be a string",
+                        "Avatar was not received",
+                        "Data was not received",
+                        "Date query parameter is required"
+                      ]
                     }
                   }
                 }
@@ -514,6 +592,7 @@
                         "Session expired",
                         "Session not found",
                         "Incorrect email or password",
+                        "Wrong password",
                         "Auth header should be of type Bearer"
                       ]
                     }

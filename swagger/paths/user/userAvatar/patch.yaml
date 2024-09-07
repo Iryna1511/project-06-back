@@ -1,17 +1,25 @@
 tags:
-  - Auth
-summary: Register a new user
-operationId: register
-description: Register a new user
+  - User
+summary: Add/update user's avatar
+operationId: patchUserAvatar
+description: Add/update user's avatar by returning a link to avatar on Cloudinary
+security:
+  - bearerAuth: []
 requestBody:
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
-        $ref: ../../../components/schemas/auth.yaml
+        properties:
+          avatar:
+            description: User's desired avatar
+            type: string
+            format: binary
+            default: null
+
 responses:
   "201":
-    description: Successfully registered a user!
+    description: Return user's data with added/updated avatar
     content:
       application/json:
         schema:
@@ -26,11 +34,11 @@ responses:
               example: 201
             message:
               type: string
-              example: "Successfully registered a user!"
+              example: "Avatar added successfully"
             data:
               type: object
               $ref: ../../../components/schemas/user.yaml
+  "400":
+    $ref: "../../../components/responses/400.yaml"
   "401":
     $ref: "../../../components/responses/401.yaml"
-  "409":
-    $ref: "../../../components/responses/409.yaml"

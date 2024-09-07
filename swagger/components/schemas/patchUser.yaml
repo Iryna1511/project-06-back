@@ -1,14 +1,5 @@
 type: object
-required:
-  - _id
-  - email
-  - gender
-  - waterRate
 properties:
-  _id:
-    description: User's id
-    type: string
-    example: 66d2e3a18c42147b871bcdcc
   name:
     description: User's name, can contain max 32 characters
     type: string
@@ -18,7 +9,7 @@ properties:
     type: string
     example: lora@gmail.com
   gender:
-    description: User's gender, must be one of ["male", "female"]
+    description: User's gender
     type: string
     enum: ["male", "female"]
     example: "male"
@@ -28,8 +19,11 @@ properties:
     type: number
     example: 2100
     default: 1500
-  avatar:
-    description: URL to user's avatar
+  password:
+    description: User's outdated password, can be min 8 max 64 characters
     type: string
-    default: null
-    example: "https://res.cloudinary.com/doicwbvic/image/upload/v1725634437/gvsagq1bnykokhtrtqr4.jpg"
+    example: "123456789"
+  newPassword:
+    description: User's new password, can be min 8 max 64 characters
+    type: string
+    example: "987654321"
