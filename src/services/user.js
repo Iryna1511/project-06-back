@@ -33,7 +33,7 @@ async function updateUser(userId, user) {
         ...updatedUser,
       };
 
-      return UserCollection.findOneAndUpdate(
+      return await UserCollection.findOneAndUpdate(
         { _id: userId },
         updatedUserWithPassAndEmail,
         {
@@ -47,7 +47,7 @@ async function updateUser(userId, user) {
       ...updatedUser,
     };
 
-    return UserCollection.findOneAndUpdate(
+    return await UserCollection.findOneAndUpdate(
       { _id: userId },
       updatedUserWithPass,
       {
@@ -66,7 +66,7 @@ async function updateUser(userId, user) {
       ...updatedUser,
     };
 
-    return UserCollection.findOneAndUpdate(
+    return await UserCollection.findOneAndUpdate(
       { _id: userId },
       updatedUserWithEmail,
       {
@@ -75,15 +75,19 @@ async function updateUser(userId, user) {
     );
   }
 
-  return UserCollection.findOneAndUpdate({ _id: userId }, updatedUser, {
+  return await UserCollection.findOneAndUpdate({ _id: userId }, updatedUser, {
     new: true,
   });
 }
 
 async function addAvatar(userId, avatar) {
-  return UserCollection.findOneAndUpdate({ _id: userId }, avatar, {
+  return await UserCollection.findOneAndUpdate({ _id: userId }, avatar, {
     new: true,
   });
 }
 
-export { updateUser, addAvatar };
+async function getUser(userId) {
+  return await UserCollection.findOne({ _id: userId });
+}
+
+export { updateUser, addAvatar, getUser };
