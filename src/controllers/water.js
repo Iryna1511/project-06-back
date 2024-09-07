@@ -1,109 +1,78 @@
 import {
-  getUserWaterConsumptionByDay,
-  createWater,
-  updateWater,
-  deleteWater,
+  getUserWaterConsumtionByMonth,
+  addWaterConsumption,
+  updateWaterConsumptionById,
+  deleteWaterConsumptionById,
+  getWaterConsumptionByDay,
 } from "../services/water.js";
-import { parseSortParams } from "../utils/parseSortParams.js";
-import createHttpError from "http-errors";
-import { calculateWaterConsumptionTotal } from "../utils/calculateWaterConsumptionTotal.js";
 
-// Отримання інформації про споживання води користувачем за певний день
-export const getUserWaterConsumptionByDayController = async (
-  req,
-  res,
-  next
-) => {
-  const userId = req.user_id;
-
-  const { sortBy, sortOrder } = parseSortParams(req.query);
-
-  const { date } = req.query;
-
-  if (!date) {
-    return next(createHttpError(400, "Date query parameter is required"));
-  }
-
-  const water = await getUserWaterConsumptionByDay({
-    userId,
-    date,
-    sortBy,
-    sortOrder,
+export const getUserWaterConsumtionByMonthController = async (req, res) => {
+  const data = await getUserWaterConsumtionByMonth({
+    user: req.user,
+    month: req.query.month,
   });
-
-  // Перевірка наявності даних про споживання води
-  if (water.data.length === 0) {
-    res.status(200).json({
-      status: 200,
-      message: `There are no water entries for ${date}.`,
-      water,
-    });
-
-    next(createHttpError(404, "Water entries not found."));
-    return;
-  }
-
-  const waterConsumptionTotal = calculateWaterConsumptionTotal(water.data);
 
   res.status(200).json({
     status: 200,
-    message: `Successfully fetched water consumption for the day ${date}`,
-    waterConsumptionTotal,
-    water,
+    message: "Successfully fetched water consumption for the month!",
+    data,
   });
 };
 
-export const createWaterController = async (req, res) => {
-  const userId = req.user._id;
+export const addWaterConsumptionController = async (req, res) => {
+  const { date, waterVolume } = req.body;
 
-  const water = await createWater({ ...req.body }, userId);
-
-  res
-    .status(201)
-    .json({
-      status: 201,
-      message: "Successfully created water entry.",
-      data: water,
-    });
-};
-
-export const patchWaterController = async (req, res, next) => {
-  const { id } = req.params;
-  const userId = req.user._id;
-
-  const result = await updateWater(id, userId, {
-    ...req.body,
+  const new_water_consumption = await addWaterConsumption({
+    user: req.user,
+    date,
+    waterVolume,
   });
 
-  if (!result) {
-    next(createHttpError(404, "Entry of water not found"));
-    return;
-  }
-
-  res
-    .status(200)
-    .json({
-      status: 200,
-      message: "Successfully patched an entry of Water!",
-      data: result.water,
-    });
+  res.status(201).json({
+    status: 201,
+    message: "Successfully added water consumption!",
+    data: new_water_consumption,
+  });
 };
 
-export const deleteWaterController = async (req, res, next) => {
+export const updateWaterConsumptionByIdController = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user._id;
-  const water = await deleteWater(id, userId);
+  const { waterVolume, date } = req.body;
 
-  if (!water) {
-    next(createHttpError(404, "Water entry not found."));
-    return;
-  }
+  const updatedEntry = await updateWaterConsumptionById({
+    id,
+    waterVolume,
+    date,
+  });
 
-  res.status(204).send();
+  res.status(200).json({
+    status: 200,
+    message: "Successfully updated water consumption!",
+    data: updatedEntry,
+  });
 };
 
-export const getUserWaterConsumptionByMonthController = async (
-  req,
-  res,
-  next
-) => {};
+export const deleteWaterConsumptionByIdController = async (req, res) => {
+  const { id } = req.params;
+
+  await deleteWaterConsumptionById({
+    id,
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: "Successfully deleted water consumption entry!",
+  });
+};
+
+export const getWaterConsumptionByDayController = async (req, res) => {
+  const { day } = req.query;
+
+  const data = await getWaterConsumptionByDay(req.user, day);
+
+  res.status(200).json({
+    status: 200,
+    message: `Successfully fetched water consumption for ${day}!`,
+    data,
+  });
+};

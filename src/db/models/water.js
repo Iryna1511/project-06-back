@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
 
-const waterCalendarSchema = new Schema(
+const waterSchema = new Schema(
   {
-    userId: {
+    user_id: {
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
@@ -22,7 +22,4 @@ const waterCalendarSchema = new Schema(
   }
 );
 
-export const WaterCalendarCollection = model(
-  "water_calendar",
-  waterCalendarSchema
-);
+export const WaterCollection = model("water", waterSchema);
