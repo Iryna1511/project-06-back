@@ -1,91 +1,162 @@
-import { WaterCalendarCollection } from "../db/models/water_calendar.js";
-import { SORT_ORDER } from "../constants/index.js";
+import { WaterCollection } from "../db/models/water.js";
+import { MAX_WATER_CONSUMPTION } from "../constants/index.js";
+import createHttpError from "http-errors";
 
-// Отримання данних про споживання води користувачем за конкретний день
-export const getUserWaterConsumptionByDay = async ({
-  userId,
-  date,
-  sortOrder = SORT_ORDER.ASC,
-  sortBy = "time",
-}) => {
-  const startDate = new Date(date);
-  const endDate = new Date(date);
-  // Наступний день для визначення кінця діапазону
-  endDate.setUTCDate(endDate.getUTCDate() + 1);
+export const getUserWaterConsumtionByMonth = async ({ user, month }) => {
+  const { startDate, endDate } = getMonthDateRange(month);
 
-  const queryWaterConsumption = WaterCalendarCollection.find({
-    userId,
-    time: {
-      $gte: startDate.toISOString(),
-      $lt: endDate.toISOString(),
+  const waterCalendarRows = await WaterCollection.find({
+    user_id: user._id,
+    date: {
+      $gte: startDate,
+      $lt: endDate,
     },
   });
 
-  // Виконання паралельних запитів
-  const [waterCount, water] = await Promise.all([
-    WaterCalendarCollection.find()
-      .merge(queryWaterConsumption)
-      .countDocuments(),
-    queryWaterConsumption.sort({ [sortBy]: sortOrder }).exec(),
-  ]);
+  if (!waterCalendarRows.length) {
+    return {};
+  }
 
-  return {
-    data: water,
-    waterCount,
-  };
+  const groupedByDay = waterCalendarRows.reduce((acc, row) => {
+    const date = formatDate(row.date);
+
+    if (acc[date]) {
+      acc[date].waterConsumption += row.waterVolume ?? 0;
+      acc[date].waterConsumptionCount += 1;
+    } else {
+      acc[date] = {
+        date,
+        waterConsumption: row.waterVolume ?? 0,
+        waterConsumptionCount: 1,
+      };
+    }
+
+    return acc;
+  }, {});
+
+  return Object.keys(groupedByDay).reduce((result, key) => {
+    result[key] = {
+      date: key,
+      dateNorm: mililitersToLiters(user.waterRate) + " L",
+      waterConsumptionPercentage:
+        Math.round(
+          (groupedByDay[key].waterConsumption / user.waterRate) * 100
+        ) + "%",
+      waterConsumptionCount: groupedByDay[key].waterConsumptionCount,
+    };
+    return result;
+  }, {});
 };
 
-// Отримання данних про споживання води користувачем за конкретний місяць
-export const getUserWaterConsumptionByMonth = async ({ userId, month }) => {
-  const startDate = new Date(`${month}-01T00:00:00Z`);
-  const endDate = new Date(startDate);
-  endDate.setUTCMonth(startDate.getUTCMonth() + 1);
+export const addWaterConsumption = async ({ user, date, waterVolume }) => {
+  if (waterVolume > MAX_WATER_CONSUMPTION) {
+    throw createHttpError(403, "Water volume exceeds the maximum limit!");
+  }
 
-  const queryWaterConsumption = WaterCalendarCollection.find({
-    userId,
-    time: {
-      $gte: startDate.toISOString(),
-      $lt: endDate.toISOString(),
-    },
+  const newWaterEntry = {
+    user_id: user._id,
+    date: new Date(date).toISOString(),
+    waterVolume: waterVolume,
+  };
+
+  return await WaterCollection.create(newWaterEntry);
+};
+
+export const updateWaterConsumptionById = async ({ id, waterVolume, date }) => {
+  if (waterVolume > MAX_WATER_CONSUMPTION) {
+    throw createHttpError(403, "Water volume exceeds the maximum limit!");
+  }
+
+  const existingEntry = await WaterCollection.findOne({
+    _id: id,
   });
 
-  const [waterCount, water] = await Promise.all([
-    WaterCalendarCollection.find()
-      .merge(queryWaterConsumption)
-      .countDocuments(),
-    queryWaterConsumption.exec(),
-  ]);
+  if (!existingEntry) {
+    throw createHttpError(404, "Water consumption entry not found!");
+  }
 
-  return {
-    data: water,
-    waterCount,
-  };
-};
-
-export const createWater = async (payload, userId) => {
-  const water = await WaterCalendarCollection.create({ ...payload, userId });
-  return water;
-};
-
-export const updateWater = async (id, userId, payload, options = {}) => {
-  const rawResult = await WaterCalendarCollection.findOneAndUpdate(
-    { _id: id, userId },
-    payload,
-    { new: true, includeResultMetadata: true, ...options }
+  const updatedEntry = await WaterCollection.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: { waterVolume, date: new Date(date).toISOString() },
+    },
+    { returnDocument: "after" }
   );
 
-  if (!rawResult || !rawResult.value) return null;
+  return updatedEntry;
+};
+
+export const deleteWaterConsumptionById = async ({ id }) => {
+  const existingEntry = await WaterCollection.findOne({
+    _id: id,
+  });
+
+  if (!existingEntry) {
+    throw createHttpError(404, "Water consumption not found.");
+  }
+
+  const deleteResult = await WaterCollection.deleteOne({ _id: id });
+  if (deleteResult.deletedCount === 0) {
+    throw createHttpError(500, "Failed to delete the water consumption.");
+  }
+};
+
+export const getWaterConsumptionByDay = async (user, date) => {
+  const requestedDate = new Date(date);
+
+  const startOfDay = requestedDate.toISOString().split("T")[0];
+  const endOfDay = new Date(requestedDate.setDate(requestedDate.getDate() + 1))
+    .toISOString()
+    .split("T")[0];
+
+  const waterEntries = await WaterCollection.find({
+    user_id: user._id,
+    date: {
+      $gte: startOfDay,
+      $lt: endOfDay,
+    },
+  });
+
+  if (!waterEntries.length) {
+    return {
+      waterConsumptionPercentage: 0,
+      waterEntries: [],
+    };
+  }
+
+  const totalWaterConsumption = waterEntries.reduce((total, entry) => {
+    return total + (entry.waterVolume || 0);
+  }, 0);
+
+  const waterConsumptionPercentage =
+    Math.round((totalWaterConsumption / user.waterRate) * 100) + "%";
 
   return {
-    water: rawResult.value,
-    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+    waterConsumptionPercentage,
+    waterEntries,
   };
 };
 
-export const deleteWater = async (id, userId) => {
-  const water = await WaterCalendarCollection.findOneAndDelete({
-    _id: id,
-    userId,
-  });
-  return water;
-};
+function formatDate(isoString) {
+  const date = new Date(isoString);
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+
+  return `${day}, ${month}`;
+}
+
+function mililitersToLiters(ml) {
+  return ml / 1000;
+}
+
+function getMonthDateRange(monthString) {
+  const [year, month] = monthString.split("-").map(Number);
+
+  const startDate = new Date(year, month - 1, 1);
+  const endDate = new Date(year, month, 1);
+
+  const startDateFormatted = startDate.toISOString().split("T")[0];
+  const endDateFormatted = endDate.toISOString().split("T")[0];
+
+  return { startDate: startDateFormatted, endDate: endDateFormatted };
+}

@@ -19,14 +19,6 @@ export default function setupServer() {
   app.use(cors());
   app.use(cookieParser());
 
-  // app.use(
-  //   pino({
-  //     transport: {
-  //       target: "pino-pretty",
-  //     },
-  //   })
-  // );
-
   app.use("/uploads", express.static(TEMP_UPLOAD_DIR));
   app.use("/api-docs", swaggerDocs());
 
