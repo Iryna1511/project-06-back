@@ -1,13 +1,13 @@
 import {
-  getUserWaterConsumtionByMonth,
+  getUserWaterConsumptionByMonth,
   addWaterConsumption,
   updateWaterConsumptionById,
   deleteWaterConsumptionById,
   getWaterConsumptionByDay,
 } from "../services/water.js";
 
-export const getUserWaterConsumtionByMonthController = async (req, res) => {
-  const data = await getUserWaterConsumtionByMonth({
+export const getUserWaterConsumptionByMonthController = async (req, res) => {
+  const data = await getUserWaterConsumptionByMonth({
     user: req.user,
     month: req.query.month,
   });

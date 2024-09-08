@@ -1,8 +1,7 @@
 import { WaterCollection } from "../db/models/water.js";
-import { MAX_WATER_CONSUMPTION } from "../constants/index.js";
 import createHttpError from "http-errors";
 
-export const getUserWaterConsumtionByMonth = async ({ user, month }) => {
+export const getUserWaterConsumptionByMonth = async ({ user, month }) => {
   const { startDate, endDate } = getMonthDateRange(month);
 
   const waterCalendarRows = await WaterCollection.find({
@@ -49,10 +48,6 @@ export const getUserWaterConsumtionByMonth = async ({ user, month }) => {
 };
 
 export const addWaterConsumption = async ({ user, date, waterVolume }) => {
-  if (waterVolume > MAX_WATER_CONSUMPTION) {
-    throw createHttpError(403, "Water volume exceeds the maximum limit!");
-  }
-
   const newWaterEntry = {
     user_id: user._id,
     date: new Date(date).toISOString(),
@@ -63,10 +58,6 @@ export const addWaterConsumption = async ({ user, date, waterVolume }) => {
 };
 
 export const updateWaterConsumptionById = async ({ id, waterVolume, date }) => {
-  if (waterVolume > MAX_WATER_CONSUMPTION) {
-    throw createHttpError(403, "Water volume exceeds the maximum limit!");
-  }
-
   const existingEntry = await WaterCollection.findOne({
     _id: id,
   });

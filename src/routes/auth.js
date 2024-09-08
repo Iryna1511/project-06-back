@@ -5,7 +5,7 @@ import authSchema from "../validation/authSchema.js";
 import loginUserSchema from "../validation/loginUserSchema.js";
 
 import {
-  rigesterUserController,
+  registerUserController,
   loginUserController,
   logoutUserController,
   refreshUsersSession,
@@ -18,7 +18,7 @@ const router = Router();
 router.post(
   "/auth/register",
   validateBody(authSchema),
-  ctrlWrapper(rigesterUserController)
+  ctrlWrapper(registerUserController)
 );
 
 router.post(
