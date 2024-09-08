@@ -4,6 +4,7 @@ required:
   - email
   - gender
   - waterRate
+  - avatar
 properties:
   _id:
     description: User's id

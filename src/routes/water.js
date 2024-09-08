@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import {
-  getUserWaterConsumtionByMonthController,
+  getUserWaterConsumptionByMonthController,
   addWaterConsumptionController,
   updateWaterConsumptionByIdController,
   deleteWaterConsumptionByIdController,
@@ -10,6 +10,9 @@ import {
 
 import ctrlWrapper from "../utils/ctrlWrapper.js";
 import authenticate from "../middlewares/authenticate.js";
+import validateBody from "../middlewares/validateBody.js";
+
+import { addWaterSchema, updateWaterSchema } from "../validation/water.js";
 
 const router = Router();
 
@@ -17,14 +20,22 @@ router.use(authenticate);
 
 router.get(
   "/water/month",
-  ctrlWrapper(getUserWaterConsumtionByMonthController)
+  ctrlWrapper(getUserWaterConsumptionByMonthController)
 );
 
 router.get("/water/day", ctrlWrapper(getWaterConsumptionByDayController));
 
-router.post("/water", ctrlWrapper(addWaterConsumptionController));
+router.post(
+  "/water",
+  validateBody(addWaterSchema),
+  ctrlWrapper(addWaterConsumptionController)
+);
 
-router.patch("/water/:id", ctrlWrapper(updateWaterConsumptionByIdController));
+router.patch(
+  "/water/:id",
+  validateBody(updateWaterSchema),
+  ctrlWrapper(updateWaterConsumptionByIdController)
+);
 
 router.delete("/water/:id", ctrlWrapper(deleteWaterConsumptionByIdController));
 

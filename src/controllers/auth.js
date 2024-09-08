@@ -8,7 +8,7 @@ import { getUser } from "../services/user.js";
 
 import { THIRTY_DAYS } from "../constants/index.js";
 
-export const rigesterUserController = async (req, res) => {
+export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
 
   res.status(201).json({

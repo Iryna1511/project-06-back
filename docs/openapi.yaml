@@ -1,11 +1,18 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Water Tracker app
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: This is a documentation of Water Tracker app
+  title: Water Tracker API docs
+  description: |-
+    This is a documentation of Water Tracker app.
+
+    This project is free web-application for comfortable record keeping of drunk water.
+
+    The main goal is to provide users with instruments for control and visualization of water consumption.
+
+    There are possibilities of registration, authentication and authorization of users. They can calculate daily water volume depending on their gender, body weight and sport activities, add/edit/delete time and amount of water they drank. As well, there are list of records for today and month statistic of reaching daily volume goal.
+
+    It is easy and convenient to use app with an intuitive interface, secured by hashing passwords and using access tokens.
+
 tags:
   - name: User
     description: Operations with user.
@@ -36,6 +43,14 @@ paths:
   /auth/logout:
     post:
       $ref: ../swagger/paths/auth/logout/post.yaml
+  /water:
+    post:
+      $ref: ../swagger/paths/water/post.yaml
+  /water/{id}:
+    patch:
+      $ref: ../swagger/paths/water/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/water/{id}/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
