@@ -27,6 +27,9 @@ export const updateUserSchema = Joi.object({
     "any.only": "Gender must be one of [male, female]",
     "string.empty": "Gender cannot be empty",
   }),
+});
+
+export const updateWaterRateSchema = Joi.object({
   waterRate: Joi.number().min(1).max(15000).messages({
     "number.min": "WaterRate must be at least {#limit} ml",
     "number.max": "WaterRate must be at most {#limit} ml",
