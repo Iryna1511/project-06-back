@@ -24,4 +24,4 @@ content:
               enum:
                 - "User not found"
                 - "Route not found"
-                - "Water entry not found."
+                - "Water consumption entry not found!"

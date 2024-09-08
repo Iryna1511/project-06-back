@@ -1,0 +1,47 @@
+tags:
+  - Water
+summary: Update water consumption entry
+operationId: updateWater
+description: "Update water consumption in ml"
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: "66a13c99ce0ac5be8ada09b0"
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        $ref: ../../../components/schemas/waterConsumption.yaml
+responses:
+  "200":
+    description: Successfully updated entry
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully updated water consumption!
+            data:
+              type: object
+              $ref: "../../../components/schemas/waterConsumptionRes.yaml"
+  "400":
+    $ref: "../../../components/responses/400.yaml"
+  "401":
+    $ref: "../../../components/responses/401.yaml"
+  "404":
+    $ref: "../../../components/responses/404.yaml"

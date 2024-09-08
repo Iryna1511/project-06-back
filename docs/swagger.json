@@ -392,6 +392,204 @@
           }
         }
       }
+    },
+    "/water": {
+      "post": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Add water consumption entry",
+        "operationId": "addWater",
+        "description": "Add water consumption in ml",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "waterVolume"
+                ],
+                "$ref": "#/components/schemas/waterConsumption"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully added entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully added water consumption!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/waterConsumptionRes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/water/{id}": {
+      "patch": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Update water consumption entry",
+        "operationId": "updateWater",
+        "description": "Update water consumption in ml",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66a13c99ce0ac5be8ada09b0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/waterConsumption"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully updated water consumption!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/waterConsumptionRes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Delete water consumption entry",
+        "operationId": "deleteWater",
+        "description": "Delete water consumption entry",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66a13c99ce0ac5be8ada09b0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully deleted water consumption entry!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -408,7 +606,8 @@
           "_id",
           "email",
           "gender",
-          "waterRate"
+          "waterRate",
+          "avatar"
         ],
         "properties": {
           "_id": {
@@ -509,6 +708,51 @@
             "example": "mySuperPassword(*_*)"
           }
         }
+      },
+      "waterConsumption": {
+        "properties": {
+          "date": {
+            "description": "Time when user adds entry, should be in the format YYYY-MM-DDTHH:MM:SS",
+            "type": "string",
+            "example": "2024-09-11T19:30:00"
+          },
+          "waterVolume": {
+            "description": "Amount of water user want to enter in ml, can be from 50 to 5000",
+            "type": "number",
+            "example": 250
+          }
+        }
+      },
+      "waterConsumptionRes": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "date",
+          "waterVolume",
+          "_id"
+        ],
+        "properties": {
+          "user_id": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66d2feae53a7fad4a2a40500"
+          },
+          "date": {
+            "description": "Time when user added entry in the format YYYY-MM-DDTHH:MM:SS.sssZ (by UTC time)",
+            "type": "string",
+            "example": "2024-09-11T12:13:12.000Z"
+          },
+          "waterVolume": {
+            "description": "Amount of water user want to enter in ml, can be from 50 to 5000",
+            "type": "number",
+            "example": 250
+          },
+          "_id": {
+            "description": "Entry's id",
+            "type": "string",
+            "example": "66dd5d27f01cf7c6680d9215"
+          }
+        }
       }
     },
     "responses": {
@@ -544,7 +788,7 @@
                         "Name must be a string",
                         "Avatar was not received",
                         "Data was not received",
-                        "Date query parameter is required"
+                        "Date should be in the format YYYY-MM-DDTHH:MM:SS"
                       ]
                     }
                   }
@@ -630,7 +874,7 @@
                       "enum": [
                         "User not found",
                         "Route not found",
-                        "Water entry not found."
+                        "Water consumption entry not found!"
                       ]
                     }
                   }

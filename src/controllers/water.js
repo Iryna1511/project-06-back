@@ -22,7 +22,7 @@ export const getUserWaterConsumptionByMonthController = async (req, res) => {
 export const addWaterConsumptionController = async (req, res) => {
   const { date, waterVolume } = req.body;
 
-  const new_water_consumption = await addWaterConsumption({
+  const newWaterConsumption = await addWaterConsumption({
     user: req.user,
     date,
     waterVolume,
@@ -31,7 +31,7 @@ export const addWaterConsumptionController = async (req, res) => {
   res.status(201).json({
     status: 201,
     message: "Successfully added water consumption!",
-    data: new_water_consumption,
+    data: newWaterConsumption,
   });
 };
 

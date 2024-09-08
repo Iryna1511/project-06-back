@@ -1,0 +1,35 @@
+tags:
+  - Water
+summary: Delete water consumption entry
+operationId: deleteWater
+description: Delete water consumption entry
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: "66a13c99ce0ac5be8ada09b0"
+responses:
+  "200":
+    description: Successfully deleted entry
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully deleted water consumption entry!
+  "401":
+    $ref: "../../../components/responses/401.yaml"
+  "404":
+    $ref: "../../../components/responses/404.yaml"

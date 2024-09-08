@@ -1,6 +1,6 @@
 tags:
   - Water
-summary: Add water consumption
+summary: Add water consumption entry
 operationId: addWater
 description: Add water consumption in ml
 security:
@@ -10,7 +10,10 @@ requestBody:
     application/json:
       schema:
         type: object
-        $ref: ../../components/schemas/addWater.yaml
+        required:
+          - date
+          - waterVolume
+        $ref: ../../components/schemas/waterConsumption.yaml
 responses:
   "201":
     description: Successfully added entry
@@ -31,7 +34,7 @@ responses:
               example: Successfully added water consumption!
             data:
               type: object
-              $ref: ../../components/schemas/waterConsumption.yaml
+              $ref: ../../components/schemas/waterConsumptionRes.yaml
   "400":
     $ref: "../../components/responses/400.yaml"
   "401":

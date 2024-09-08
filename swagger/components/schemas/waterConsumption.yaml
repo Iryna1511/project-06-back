@@ -1,23 +1,9 @@
-type: object
-required:
-  - user_id
-  - date
-  - waterVolume
-  - _id
 properties:
-  user_id:
-    description: User's id
-    type: string
-    example: 66d2feae53a7fad4a2a40500
   date:
-    description: Time when user added entry in the format YYYY-MM-DDTHH:MM:SS.sssZ (by UTC time)
+    description: Time when user adds entry, should be in the format YYYY-MM-DDTHH:MM:SS
     type: string
-    example: "2024-09-11T12:13:12.000Z"
+    example: "2024-09-11T19:30:00"
   waterVolume:
     description: Amount of water user want to enter in ml, can be from 50 to 5000
     type: number
     example: 250
-  _id:
-    description: Entry's id
-    type: string
-    example: 66dd5d27f01cf7c6680d9215

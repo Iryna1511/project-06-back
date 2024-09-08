@@ -4,7 +4,7 @@ const usersSchema = new Schema(
   {
     name: {
       type: String,
-      required: false,
+      default: null,
     },
     email: {
       type: String,
@@ -28,7 +28,6 @@ const usersSchema = new Schema(
     },
     avatar: {
       type: String,
-      required: true,
       default: null,
     },
   },
