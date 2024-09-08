@@ -3,11 +3,15 @@ import {
   getUserController,
   updateUserController,
   addAvatarController,
+  updateWaterRateController,
 } from "../controllers/user.js";
 import ctrlWrapper from "../utils/ctrlWrapper.js";
 import validateBody from "../middlewares/validateBody.js";
 import authenticate from "../middlewares/authenticate.js";
-import { updateUserSchema } from "../validation/userSchema.js";
+import {
+  updateUserSchema,
+  updateWaterRateSchema,
+} from "../validation/userSchema.js";
 import upload from "../middlewares/multer.js";
 
 const router = express.Router();
@@ -28,6 +32,12 @@ router.patch(
   "/user/avatar",
   upload.single("avatar"),
   ctrlWrapper(addAvatarController)
+);
+
+router.patch(
+  "/user/waterRate",
+  validateBody(updateWaterRateSchema),
+  ctrlWrapper(updateWaterRateController)
 );
 
 export default router;

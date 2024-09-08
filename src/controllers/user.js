@@ -1,4 +1,4 @@
-import { updateUser, addAvatar } from "../services/user.js";
+import { updateUser, addAvatar, updateWaterRate } from "../services/user.js";
 import saveFileToCloudinary from "../utils/saveFileToCloudinary.js";
 import createHttpError from "http-errors";
 
@@ -20,7 +20,6 @@ async function updateUserController(req, res, next) {
     password: req.body.password,
     newPassword: req.body.newPassword,
     gender: req.body.gender,
-    waterRate: req.body.waterRate,
   };
 
   const updatedUser = await updateUser(req.user._id, user);
@@ -57,4 +56,22 @@ async function addAvatarController(req, res, next) {
   });
 }
 
-export { getUserController, updateUserController, addAvatarController };
+async function updateWaterRateController(req, res, next) {
+  const { waterRate } = req.body;
+  const userId = req.user._id;
+
+  const userWithUpdatedWaterRate = await updateWaterRate(userId, waterRate);
+
+  res.status(200).json({
+    status: 200,
+    message: "User successfully patched!",
+    data: userWithUpdatedWaterRate,
+  });
+}
+
+export {
+  getUserController,
+  updateUserController,
+  addAvatarController,
+  updateWaterRateController,
+};

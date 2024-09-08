@@ -86,8 +86,18 @@ async function addAvatar(userId, avatar) {
   });
 }
 
+async function updateWaterRate(userId, waterRate) {
+  return await UserCollection.findOneAndUpdate(
+    { _id: userId },
+    { waterRate: waterRate },
+    {
+      new: true,
+    }
+  );
+}
+
 async function getUser(userId) {
   return await UserCollection.findOne({ _id: userId });
 }
 
-export { updateUser, addAvatar, getUser };
+export { updateUser, addAvatar, updateWaterRate, getUser };
