@@ -1,0 +1,33 @@
+type: object
+properties:
+  date,month:
+    description: Data for "date,month"
+    type: object
+    required:
+      - date
+      - dateNorm
+      - waterConsumptionPercentage
+      - waterConsumptionCount
+    properties:
+      date:
+        description: date,month
+        type: string
+        example: "10, September"
+      dateNorm:
+        description: Daily water goal in L
+        type: string
+        example: 1.5 L
+      waterConsumptionPercentage:
+        description: Ratio of water consumed to daily goal in percentage
+        type: string
+        example: 300%
+      waterConsumptionCount:
+        description: Number of water consumptions on date,month
+        type: integer
+        example: 9
+
+  # waterEntries:
+  #   description: List of water entries for chosen date
+  #   type: array
+  #   items:
+  #     $ref: ./waterConsumptionRes.yaml
