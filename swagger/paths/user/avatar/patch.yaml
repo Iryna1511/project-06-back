@@ -1,0 +1,46 @@
+tags:
+  - User
+summary: Add/update user's avatar
+operationId: patchUserAvatar
+description: Add/update user's avatar by returning a link to avatar on Cloudinary
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - avatar
+        properties:
+          avatar:
+            description: User's desired avatar
+            type: string
+            format: binary
+            default: null
+
+responses:
+  "201":
+    description: Return user's data with added/updated avatar
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: "Avatar added successfully"
+            data:
+              type: object
+              $ref: ../../../components/schemas/user.yaml
+  "400":
+    $ref: "../../../components/responses/400.yaml"
+  "401":
+    $ref: "../../../components/responses/401.yaml"
