@@ -1,0 +1,14 @@
+type: object
+required:
+  - waterConsumptionPercentage
+  - waterEntries
+properties:
+  waterConsumptionPercentage:
+    description: Ratio of water consumed to daily goal in percentage
+    type: string
+    example: 300%
+  waterEntries:
+    description: List of water entries for chosen date
+    type: array
+    items:
+      $ref: ./waterConsumptionRes.yaml
