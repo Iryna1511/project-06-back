@@ -247,7 +247,7 @@
         },
         "responses": {
           "200": {
-            "description": "Update's information about daily water goal",
+            "description": "Update's information about daily water goal, returns whole user`s data",
             "content": {
               "application/json": {
                 "schema": {
@@ -665,6 +665,66 @@
           }
         }
       }
+    },
+    "/water/day": {
+      "get": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Get water consumption by day",
+        "operationId": "getWaterByDay",
+        "description": "Get list of water entries for chosen date and water consumption percentage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "day",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2024-09-12",
+              "description": "date must be passed in the format of YYYY-MM-DD"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get water consumption by day",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully fetched water consumption for 2024-09-12!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/waterByDayRes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -820,6 +880,27 @@
             "description": "Entry's id",
             "type": "string",
             "example": "66dd5d27f01cf7c6680d9215"
+          }
+        }
+      },
+      "waterByDayRes": {
+        "type": "object",
+        "required": [
+          "waterConsumptionPercentage",
+          "waterEntries"
+        ],
+        "properties": {
+          "waterConsumptionPercentage": {
+            "description": "Ratio of water consumed to daily goal in percentage",
+            "type": "string",
+            "example": "300%"
+          },
+          "waterEntries": {
+            "description": "List of water entries for chosen date",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/waterConsumptionRes"
+            }
           }
         }
       }
