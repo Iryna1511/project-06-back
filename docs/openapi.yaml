@@ -30,7 +30,10 @@ paths:
       $ref: ../swagger/paths/user/patch.yaml
   /user/avatar:
     patch:
-      $ref: ../swagger/paths/user/userAvatar/patch.yaml
+      $ref: ../swagger/paths/user/avatar/patch.yaml
+  /user/waterRate:
+    patch:
+      $ref: ../swagger/paths/user/waterRate/patch.yaml
   /auth/register:
     post:
       $ref: ../swagger/paths/auth/register/post.yaml

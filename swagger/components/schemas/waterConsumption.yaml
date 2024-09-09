@@ -1,8 +1,8 @@
 properties:
   date:
-    description: Time when user adds entry, should be in the format YYYY-MM-DDTHH:MM:SS
+    description: Time when user adds entry, must be in the format YYYY-MM-DDTHH:MM:SSZ
     type: string
-    example: "2024-09-11T19:30:00"
+    example: "2024-09-11T19:30:00Z"
   waterVolume:
     description: Amount of water user want to enter in ml, can be from 50 to 5000
     type: number

@@ -14,11 +14,6 @@ properties:
     enum: ["male", "female"]
     example: "male"
     default: "female"
-  waterRate:
-    description: User's daily water goal in ml, can be from 1 to 15000
-    type: number
-    example: 2100
-    default: 1500
   password:
     description: User's outdated password, can be min 8 max 64 characters
     type: string
