@@ -11,8 +11,10 @@ import {
 import ctrlWrapper from "../utils/ctrlWrapper.js";
 import authenticate from "../middlewares/authenticate.js";
 import validateBody from "../middlewares/validateBody.js";
+import validateQuery from "../middlewares/validateQuery.js";
 
 import { addWaterSchema, updateWaterSchema } from "../validation/water.js";
+import { monthSchema, daySchema } from "../validation/query.js";
 
 const router = Router();
 
@@ -20,10 +22,15 @@ router.use(authenticate);
 
 router.get(
   "/water/month",
+  validateQuery(monthSchema),
   ctrlWrapper(getUserWaterConsumptionByMonthController)
 );
 
-router.get("/water/day", ctrlWrapper(getWaterConsumptionByDayController));
+router.get(
+  "/water/day",
+  validateQuery(daySchema),
+  ctrlWrapper(getWaterConsumptionByDayController)
+);
 
 router.post(
   "/water",

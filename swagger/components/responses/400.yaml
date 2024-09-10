@@ -25,4 +25,4 @@ content:
                 - "Name must be a string"
                 - "Avatar was not received"
                 - "Data was not received"
-                - "Date should be in the format YYYY-MM-DDTHH:MM:SS"
+                - "Date should be in the format YYYY-MM-DDTHH:MM:SSZ"

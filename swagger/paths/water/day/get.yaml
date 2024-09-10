@@ -33,5 +33,7 @@ responses:
               example: "Successfully fetched water consumption for 2024-09-12!"
             data:
               $ref: ../../../components/schemas/waterByDayRes.yaml
+  "400":
+    $ref: "../../../components/responses/400.yaml"
   "401":
     $ref: "../../../components/responses/401.yaml"
