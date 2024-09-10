@@ -4,9 +4,9 @@ required:
   - waterEntries
 properties:
   waterConsumptionPercentage:
-    description: Ratio of water consumed to daily goal in percentage
-    type: string
-    example: 300%
+    description: Ratio of water consumed to daily goal in %
+    type: integer
+    example: 300
   waterEntries:
     description: List of water entries for chosen date
     type: array
