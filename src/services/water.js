@@ -36,11 +36,10 @@ export const getUserWaterConsumptionByMonth = async ({ user, month }) => {
   return Object.keys(groupedByDay).reduce((result, key) => {
     result[key] = {
       date: key,
-      dateNorm: millilitersToLiters(user.waterRate) + " L",
-      waterConsumptionPercentage:
-        Math.round(
-          (groupedByDay[key].waterConsumption / user.waterRate) * 100
-        ) + "%",
+      dateNorm: millilitersToLiters(user.waterRate),
+      waterConsumptionPercentage: Math.round(
+        (groupedByDay[key].waterConsumption / user.waterRate) * 100
+      ),
       waterConsumptionCount: groupedByDay[key].waterConsumptionCount,
     };
     return result;
@@ -119,8 +118,9 @@ export const getWaterConsumptionByDay = async (user, date) => {
     return total + (entry.waterVolume || 0);
   }, 0);
 
-  const waterConsumptionPercentage =
-    Math.round((totalWaterConsumption / user.waterRate) * 100) + "%";
+  const waterConsumptionPercentage = Math.round(
+    (totalWaterConsumption / user.waterRate) * 100
+  );
 
   return {
     waterConsumptionPercentage,
