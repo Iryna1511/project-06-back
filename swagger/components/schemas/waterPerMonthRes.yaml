@@ -1,27 +1,26 @@
 type: object
-properties:
-  date,month:
-    description: Data for "date,month"
-    type: object
-    required:
-      - date
-      - dateNorm
-      - waterConsumptionPercentage
-      - waterConsumptionCount
-    properties:
-      date:
-        description: date,month
-        type: string
-        example: "10, September"
-      dateNorm:
-        description: Daily water goal in L
-        type: number
-        example: 1.5
-      waterConsumptionPercentage:
-        description: Ratio of water consumed to daily goal in %
-        type: integer
-        example: 300
-      waterConsumptionCount:
-        description: Number of water consumptions on date,month
-        type: integer
-        example: 9
+additionalProperties:
+  type: object
+  description: Object with data for date of the month, which is key name
+  required:
+    - date
+    - dateNorm
+    - waterConsumptionPercentage
+    - waterConsumptionCount
+  properties:
+    date:
+      description: date,month
+      type: string
+      example: "10, September"
+    dateNorm:
+      description: Daily water goal in L
+      type: number
+      example: 1.5
+    waterConsumptionPercentage:
+      description: Ratio of water consumed to daily goal in %
+      type: integer
+      example: 300
+    waterConsumptionCount:
+      description: Number of water consumptions on date,month
+      type: integer
+      example: 9
